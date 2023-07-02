@@ -4,7 +4,8 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 export interface LoginProps {
-  onSubmit: (string) => void;
+  onSubmit: (string) => void
+  retry: boolean
 }
 
 export default function Login(props: LoginProps) {
@@ -12,15 +13,16 @@ export default function Login(props: LoginProps) {
 
   const submitPassword = (e: any) => {
     e.preventDefault()
-    console.log(password)
     props.onSubmit(password)
+    console.log(props.retry)
   }
+
 
   return (
     <form>
-      <span>Enter Password</span>
+      <span>{props.retry? "Invalid Password" : "Enter Password"}</span>
       <input type="password" onChange={e => (setPassword(e.target.value))} />
-      <input type="submit" value="submit" onClick={e => submitPassword(e)} />
+      <input type="submit" value="" onClick={e => submitPassword(e)} />
     </form>
   );
 }
