@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "benguiat";
+  src: url("../public/fonts/Benguiat\ Normal.ttf");
+}
+
+@font-face {
+  font-family: "highway-gothic";
+  src: url("../public/fonts/HWYGWDE.TTF")
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -24,4 +34,21 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.guy-bg {
+  width: 100vh;
+  height: 100vw;
+  background-image: url("../public/images/DefconGuy.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.05;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  -ms-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+  pointer-events: none;
 }

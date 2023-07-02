@@ -43,7 +43,7 @@ export default function Home() {
 
   if(!password) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className="flex min-h-screen flex-col justify-center mx-auto p-12 gap-6 max-w-prose">
         <Login onSubmit={(pass: string) => {setPassword(pass)}}/>
       </main>
     )
