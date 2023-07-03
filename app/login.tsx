@@ -14,7 +14,6 @@ export default function Login(props: LoginProps) {
   const submitPassword = (e: any) => {
     e.preventDefault()
     props.onSubmit(password)
-    console.log(props.retry)
   }
 
 
@@ -28,5 +27,5 @@ export default function Login(props: LoginProps) {
         <input type="submit" value="" onClick={e => submitPassword(e)} />
       </form>
     </>
-  );
+  )
 }
