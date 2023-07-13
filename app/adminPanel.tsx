@@ -25,6 +25,7 @@ export default function AdminPanel(props: AdminPanelProps) {
   const [users, setUsers] = useState([])
   const [rings, setRings] = useState([])
   const [partyLoading, setPartyLoading] = useState(false)
+  const [partyDetails, setPartyDetails] = useState('')
 
   
   const getUsers = async () => {
@@ -45,7 +46,7 @@ export default function AdminPanel(props: AdminPanelProps) {
   }
 
   const getRings = async () => {
-    let timestamp = Math.round((Date.now() / 1000) - 300) // last 5 minutes
+    let timestamp = Math.round((Date.now() / 1000) - 600) // last 10 minutes
 
     let headers = new Headers()
     headers.append("Authorization", "Basic " + base64_encode(props.uid + ":" + props.password))
@@ -77,9 +78,26 @@ export default function AdminPanel(props: AdminPanelProps) {
     getUsers()
   }
 
+  const updatePartyDetails = async (e: any) => {
+    e.preventDefault()
+    let headers = new Headers()
+    headers.append("Authorization", "Basic " + base64_encode(props.uid + ":" + props.password))
+    const apiUsers = await fetch(
+      API_URL + "/announce/party",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          text: partyDetails
+        })
+      }
+    )
+  }
+
   useEffect(() => {
     getUsers()
     getRings()
+    setInterval(getRings, 5000)
   }, [])
 
   if (!props.userInfo?.admin) {
@@ -90,12 +108,14 @@ export default function AdminPanel(props: AdminPanelProps) {
     <Loading />
   )
 
+  const tableHeaderCSS = {
+    backgroundColor: 'transparent',
+    color: 'white',
+  }
+
   if(users.length > 0) {
     usersTable = (
       <Table 
-        striped
-        sticked
-        bordered
         aria-label="User admin table"
         css={{
           height: "auto",
@@ -103,20 +123,35 @@ export default function AdminPanel(props: AdminPanelProps) {
         }}
       >
         <Table.Header>
-          <Table.Column>UID</Table.Column>
-          <Table.Column>Username</Table.Column>
-          <Table.Column>Banned</Table.Column>
+          <Table.Column css={tableHeaderCSS}>UID</Table.Column>
+          <Table.Column css={tableHeaderCSS}>Username</Table.Column>
+          <Table.Column css={tableHeaderCSS}>Banned</Table.Column>
+          <Table.Column css={tableHeaderCSS}>Admin</Table.Column>
         </Table.Header>
         <Table.Body>
           {users.map((item: any) => (
-            <Table.Row key={item.id}>
+            <Table.Row key={item.id}
+              css={{
+                color: colors.dcblue,
+                textAlign: 'left'
+              }}
+            >
               <Table.Cell>{item.id}</Table.Cell>
               <Table.Cell>{item.username}</Table.Cell>
               <Table.Cell>
                 <Switch checked={item.banned} onChange={(e: any) => {
                   updateUser({
                     ...item,
-                    banned: e.checked
+                    banned: e.target.checked
+                  })
+                }}>
+                </Switch>
+              </Table.Cell>
+              <Table.Cell>
+                <Switch checked={item.admin} onChange={(e: any) => {
+                  updateUser({
+                    ...item,
+                    admin: e.target.checked
                   })
                 }}>
                 </Switch>
@@ -135,23 +170,22 @@ export default function AdminPanel(props: AdminPanelProps) {
   if(rings.length > 0) {
     ringsTable = (
       <Table 
-        sticked
-        bordered
         aria-label="Ring log"
       >
         <Table.Header>
-          <Table.Column>UID</Table.Column>
-          <Table.Column>Timestamp</Table.Column>
-          <Table.Column>Valid</Table.Column>
+          <Table.Column css={tableHeaderCSS}>UID</Table.Column>
+          <Table.Column css={tableHeaderCSS}>Timestamp</Table.Column>
         </Table.Header>
         <Table.Body>
           {rings.map((item: any) => (
-            <Table.Row key={item.timestamp + item.uid}>
+            <Table.Row
+              key={item.timestamp + item.uid}
+              css={{
+                color: colors.dcblue,
+                textAlign: 'left'
+              }}>
               <Table.Cell>{item.uid}</Table.Cell>
               <Table.Cell>{new Date(parseInt(item.timestamp) * 1000).toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"})}</Table.Cell>
-              <Table.Cell>
-                {item.valid}
-              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -164,13 +198,14 @@ export default function AdminPanel(props: AdminPanelProps) {
       <Spacer />
       <div>
         <form>
-          <input placeholder="set party details (default '???')" className="rounded-md"/>
-          <input type="submit" value="" />
+          <input placeholder="set party details (default 'TBA')" className="rounded-md bg-transparent border-0 border-b-2 border-b-periwinkle focus:border-b-mint !outline-none pb-1" onChange={e => setPartyDetails(e.target.value)}/>
+          <input type="submit" value="" onClick={e => updatePartyDetails(e)}/>
         </form>
       </div>
       <Spacer />
       <Text h1 color={colors.dcpurple} className="text-3xl font-bold">Users</Text>
       {usersTable}
+      <Spacer />
       <Text h2 color={colors.dcpurple} className="text-3xl font-bold">Rings</Text>
       {ringsTable}
     </div>

@@ -21,6 +21,7 @@ export default function Home() {
   const [userInfo, setUserInfo] = useState(null)
   const [doorbellLoading, setDoorbellLoading] = useState(false)
   const [doorbellDisabled, setDoorbellDisabled] = useState(false)
+  const [partyInfo, setPartyInfo] = useState("")
 
   useEffect(() => {
     const bootstrapUser = async () => {
@@ -46,6 +47,8 @@ export default function Home() {
           // boostrap user data
           await setUserInfo(await userCheck.json())
           await setLoggedIn(true)
+          setInterval(partyDetailsWatchdog, 2000)
+
         case 401:
           // invalid password
       }
@@ -53,9 +56,28 @@ export default function Home() {
     bootstrapUser()
   })
 
+  const partyDetailsWatchdog = async () => {
+    let headers = new Headers();
+    headers.append("Authorization", "Basic " + base64_encode(uid + ":" + password))
+    const details = await fetch(
+      API_URL + "/announce/party",
+      {
+        method: "GET",
+        headers: headers
+      }
+    )
+
+    if(details.status !== 200) {
+      console.log("Something went wrong fetching party details")
+      return
+    }
+
+    let newInfo = await details.json()
+    await setPartyInfo(newInfo.text)
+  }
+
   const register = async (username: string, password: string) => {
     let headers = new Headers();
-    //headers.append("Authorization", "Basic " + base64_encode(uid + ":" + password))
     const userRegister = await fetch(
       API_URL + "/user/" + uid,
       {
@@ -107,7 +129,7 @@ export default function Home() {
   if(loggedIn) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <Ringer loading={doorbellLoading} disabled={doorbellDisabled} userInfo={userInfo} onSubmit={ring} partyInfo="" />
+        <Ringer loading={doorbellLoading} disabled={doorbellDisabled} userInfo={userInfo} onSubmit={ring} partyInfo={partyInfo} />
         <Spacer />
         <AdminPanel userInfo={userInfo} uid={uid} password={password} />
       </main>
