@@ -14,6 +14,10 @@ module.exports = {
       'peach': '#F8A28B',
       'gray-light': '#777',
       'gray-dark': '#111',
+      'dcprimary': '#686e9f',
+      'dcsecondary': '#86c8bc',
+      'dcsuccess': '#eada24',
+      'dcerror': '#ffa38b'
     },
     fontFamily: {
       sans: ['highway-gothic', 'sans-serif'],

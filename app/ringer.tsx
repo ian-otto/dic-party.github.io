@@ -5,7 +5,8 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faBell, faSkull } from "@fortawesome/free-solid-svg-icons";
-import { Text, Spacer, Card, Button, Loading } from '@nextui-org/react'
+import { Text, Spacer, Card, Button, Loading, Progress } from '@nextui-org/react'
+import { colors } from './constants'
 
 library.add(faBell)
 library.add(faSkull)
@@ -16,6 +17,7 @@ export interface RingerProps {
   disabled: boolean
   banned: boolean
   userInfo: any
+  partyInfo: string
 }
 
 export default function Ringer(props: RingerProps) {
@@ -29,17 +31,31 @@ export default function Ringer(props: RingerProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       <div>
-          <Text color="primary">username> {props.userInfo.username}</Text>
+          <Text color={colors.dcblue}>username> {props.userInfo.username}</Text>
           <Text 
-            color={props.userInfo.banned ? "error" : "primary"}
+            color={props.userInfo.banned ? colors.dcorange : colors.dcblue}
           >
             status> {props.userInfo.banned ? "banned" : "active"}
           </Text>
+          <Text
+            color={colors.dcyellow}
+          >
+            party location> {props.partyInfo}
+          </Text>
       </div>
-      <Button bordered size="xl" disabled={props.disabled ? true : false} onPress={props.onSubmit}>
-        {buttonContent}
+      <Spacer />
+      <Button
+        bordered
+        size="xl"
+        css={{
+          color: colors.dcpurple,
+          borderColor: colors.dcpurple
+        }} 
+        disabled={props.disabled || props.userInfo.banned ? true : false} 
+        onPress={props.onSubmit}>
+          {buttonContent}
       </Button>
     </div>
   );

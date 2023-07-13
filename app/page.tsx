@@ -8,6 +8,7 @@ import Register from './register'
 import AdminPanel from './adminPanel'
 import React, { useState, useEffect } from 'react'
 import {decode as base64_decode, encode as base64_encode} from 'base-64'
+import { Spacer } from '@nextui-org/react'
 
 const API_URL = "https://7mg5vpebc4.execute-api.us-west-2.amazonaws.com"
 
@@ -103,6 +104,7 @@ export default function Home() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <Ringer banned={userInfo.banned} loading={doorbellLoading} disabled={doorbellDisabled} userInfo={userInfo} onSubmit={ring} />
+        <Spacer />
         <AdminPanel userInfo={userInfo} uid={uid} password={password} />
       </main>
     )
