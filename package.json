@@ -2,13 +2,14 @@
   "name": "dic-doorbell",
   "version": "0.1.0",
   "private": true,
+  "homepage": "dic-party.github.io/dic-ring",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d .next"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
