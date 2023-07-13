@@ -9,16 +9,18 @@ export interface LoginProps {
 
 export default function Login(props: LoginProps) {
   const [password, setPassword] = useState<string>("")
-  const inputRef = useRef()
+  const inputRef = useRef<any>(null)
 
   const submitPassword = (e: any) => {
     e.preventDefault()
     props.onSubmit(password)
   }
 
-  useEffect(() => {
-    inputRef.current.focus()
-  }, [])
+  useEffect( () => {
+    if(inputRef) {
+      inputRef?.current?.focus()
+    }
+  })
 
   return (
     <>
