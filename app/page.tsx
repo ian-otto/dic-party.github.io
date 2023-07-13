@@ -17,13 +17,17 @@ export default function Home() {
   const [password, setPassword] = useState("")
   const [loggedIn, setLoggedIn] = useState(false)
   const [registering, setRegistering] = useState(false)
-  const uid = new URL(document.location).searchParams.get("id")
+  const [uid, setUid] = useState("")
   const [userInfo, setUserInfo] = useState(null)
   const [doorbellLoading, setDoorbellLoading] = useState(false)
   const [doorbellDisabled, setDoorbellDisabled] = useState(false)
 
   useEffect(() => {
     const bootstrapUser = async () => {
+      let uidInParams = new URL(document.location.href).searchParams.get("id")
+      if(uid === "" && uidInParams) {
+        setUid(uidInParams)
+      }
       if(loggedIn || registering) return;
       let headers = new Headers();
       headers.append("Authorization", "Basic " + base64_encode(uid + ":" + password))
@@ -103,7 +107,7 @@ export default function Home() {
   if(loggedIn) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <Ringer banned={userInfo.banned} loading={doorbellLoading} disabled={doorbellDisabled} userInfo={userInfo} onSubmit={ring} />
+        <Ringer loading={doorbellLoading} disabled={doorbellDisabled} userInfo={userInfo} onSubmit={ring} partyInfo="" />
         <Spacer />
         <AdminPanel userInfo={userInfo} uid={uid} password={password} />
       </main>

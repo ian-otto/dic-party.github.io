@@ -11,7 +11,7 @@ library.add(faBell)
 library.add(faSkull)
 
 export interface RegisterProps {
-  onSubmit: (string, string) => void
+  onSubmit(username: string, password: string): void
 }
 
 export default function Register(props: RegisterProps) {
@@ -22,13 +22,12 @@ export default function Register(props: RegisterProps) {
   const submit = (e: any) => {
     e.preventDefault()
   
-    console.log(username, password, invalidPass)
     if(username && password && !invalidPass) {
       props.onSubmit(username, password)
     }
   }
 
-  const onPasswordChange = (e) => {
+  const onPasswordChange = (e: any) => {
     let pass = e.target.value
     setPassword(pass)
     if(pass.indexOf(":") !== -1) {
@@ -44,7 +43,7 @@ export default function Register(props: RegisterProps) {
       <form className="flex flex-col gap-4">
         <h1 className="font-serif text-peach text-4xl">Register</h1>
         {invalidPass ? 
-          <b>Invalid character in password (':')</b>
+          <b>Invalid character in password (:)</b>
           :
           ""
         }

@@ -15,7 +15,6 @@ export interface RingerProps {
   onSubmit: () => void
   loading: boolean
   disabled: boolean
-  banned: boolean
   userInfo: any
   partyInfo: string
 }
@@ -33,16 +32,16 @@ export default function Ringer(props: RingerProps) {
   return (
     <div className="flex flex-col">
       <div>
-          <Text color={colors.dcblue}>username> {props.userInfo.username}</Text>
+          <Text color={colors.dcblue}>username&gt; {props.userInfo.username}</Text>
           <Text 
             color={props.userInfo.banned ? colors.dcorange : colors.dcblue}
           >
-            status> {props.userInfo.banned ? "banned" : "active"}
+            status&gt; {props.userInfo.banned ? "banned" : "active"}
           </Text>
           <Text
             color={colors.dcyellow}
           >
-            party location> {props.partyInfo}
+            party location&gt; {props.partyInfo}
           </Text>
       </div>
       <Spacer />

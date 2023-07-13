@@ -17,19 +17,16 @@ const API_URL = "https://7mg5vpebc4.execute-api.us-west-2.amazonaws.com"
 
 export interface AdminPanelProps {
   userInfo: any
-  uid: string
-  password: string
+  uid: string | null
+  password: string | null
 }
 
 export default function AdminPanel(props: AdminPanelProps) {
-  if (!props.userInfo?.admin) {
-    return
-  }
-
   const [users, setUsers] = useState([])
   const [rings, setRings] = useState([])
   const [partyLoading, setPartyLoading] = useState(false)
 
+  
   const getUsers = async () => {
     let headers = new Headers()
     headers.append("Authorization", "Basic " + base64_encode(props.uid + ":" + props.password))
@@ -85,6 +82,9 @@ export default function AdminPanel(props: AdminPanelProps) {
     getRings()
   }, [])
 
+  if (!props.userInfo?.admin) {
+    return
+  }
   
   let usersTable = (
     <Loading />
@@ -108,7 +108,7 @@ export default function AdminPanel(props: AdminPanelProps) {
           <Table.Column>Banned</Table.Column>
         </Table.Header>
         <Table.Body>
-          {users.map((item) => (
+          {users.map((item: any) => (
             <Table.Row key={item.id}>
               <Table.Cell>{item.id}</Table.Cell>
               <Table.Cell>{item.username}</Table.Cell>
@@ -144,8 +144,8 @@ export default function AdminPanel(props: AdminPanelProps) {
           <Table.Column>Timestamp</Table.Column>
           <Table.Column>Valid</Table.Column>
         </Table.Header>
-        <Table.Body className="bg-white">
-          {rings.map((item) => (
+        <Table.Body>
+          {rings.map((item: any) => (
             <Table.Row key={item.timestamp + item.uid}>
               <Table.Cell>{item.uid}</Table.Cell>
               <Table.Cell>{new Date(parseInt(item.timestamp) * 1000).toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"})}</Table.Cell>
@@ -165,7 +165,7 @@ export default function AdminPanel(props: AdminPanelProps) {
       <div>
         <form>
           <input placeholder="set party details (default '???')" className="rounded-md"/>
-          <input type="submit" value="" onClick={e => updatePartyDetails(e)} />
+          <input type="submit" value="" />
         </form>
       </div>
       <Spacer />
