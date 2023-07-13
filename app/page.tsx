@@ -43,12 +43,13 @@ export default function Home() {
         case 204:
           // we need to register
           setRegistering(true)
+          break
         case 200:
           // boostrap user data
           await setUserInfo(await userCheck.json())
           await setLoggedIn(true)
           setInterval(partyDetailsWatchdog, 2000)
-
+          break
         case 401:
           // invalid password
       }
