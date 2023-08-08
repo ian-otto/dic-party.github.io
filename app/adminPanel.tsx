@@ -188,9 +188,7 @@ export default function AdminPanel(props: AdminPanelProps) {
       <Table aria-label="Ring log">
         <Table.Header>
           <Table.Column>User</Table.Column>
-          <Table.Column className="table-cell font-serif">
-            Timestamp
-          </Table.Column>
+          <Table.Column>Timestamp</Table.Column>
         </Table.Header>
         <Table.Body>
           {rings.map((item: any) => (
