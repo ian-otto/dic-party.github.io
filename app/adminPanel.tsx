@@ -208,11 +208,11 @@ export default function AdminPanel(props: AdminPanelProps) {
                 }}
               >
                 <Checkbox
-                  checked={item.banned}
-                  onChange={(e: any) => {
+                  isSelected={item.banned}
+                  onChange={(e: boolean) => {
                     updateUser({
                       ...item,
-                      banned: e.target.checked,
+                      banned: e,
                     });
                   }}
                 ></Checkbox>
@@ -223,11 +223,11 @@ export default function AdminPanel(props: AdminPanelProps) {
                 }}
               >
                 <Checkbox
-                  checked={item.admin}
-                  onChange={(e: any) => {
+                  isSelected={item.admin}
+                  onChange={(e: boolean) => {
                     updateUser({
                       ...item,
-                      admin: e.target.checked,
+                      admin: e,
                     });
                   }}
                 ></Checkbox>
