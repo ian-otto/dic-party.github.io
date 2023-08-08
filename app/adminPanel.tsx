@@ -29,6 +29,7 @@ export interface AdminPanelProps {
   userInfo: any;
   uid: string | null;
   password: string | null;
+  partyTime: boolean;
 }
 
 export default function AdminPanel(props: AdminPanelProps) {
@@ -36,6 +37,7 @@ export default function AdminPanel(props: AdminPanelProps) {
   const [rings, setRings] = useState([]);
   const [partyLoading, setPartyLoading] = useState(false);
   const [partyDetails, setPartyDetails] = useState("");
+  const [bellLoading, setBellLoading] = useState(false);
 
   const getUsers = async () => {
     let headers = new Headers();
@@ -102,6 +104,25 @@ export default function AdminPanel(props: AdminPanelProps) {
       }),
     });
   };
+
+  const updateBellEnabled = async () => {
+    setBellLoading(true);
+    let headers = new Headers();
+    headers.append(
+      "Authorization",
+      "Basic " + base64_encode(props.uid + ":" + props.password)
+    );
+    let enabled = 'Y';
+    if(props.partyTime) enabled = 'N';
+    const bell = await fetch(API_URL + "/announce/bell", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        text: enabled,
+      }),
+    });
+    setBellLoading(false);
+  }
 
   useEffect(() => {
     if (props.userInfo.admin) {
@@ -286,11 +307,29 @@ export default function AdminPanel(props: AdminPanelProps) {
     );
   }
 
+  let buttonContent = null;
+  if (bellLoading) {
+    buttonContent = <Loading color="currentColor" size="sm" />;
+  } else {
+    buttonContent = props.partyTime ? "Disable Doorbell" : "Enable Doorbell";
+  }
+
+
   return (
     <div className="flex flex-col gap-8">
       <h1 className="font-serif text-peach text-4xl uppercase">
         Admin Controls
       </h1>
+      <section className="flex flex-col gap-2">
+        <Button
+          size="lg"
+          className="!bg-periwinkle rounded-full font-sans uppercase"
+          onPress={updateBellEnabled}
+        >
+          {buttonContent}
+        </Button>
+      </section>
+
       <section className="flex flex-col gap-2">
         <h2 className="text-3xl font-serif text-periwinkle">
           Set Party Details

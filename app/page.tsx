@@ -34,6 +34,7 @@ export default function Home() {
   const [doorbellLoading, setDoorbellLoading] = useState(false);
   const [doorbellDisabled, setDoorbellDisabled] = useState(false);
   const [partyInfo, setPartyInfo] = useState("");
+  const [partyTime, setPartyTime] = useState(false);
 
   useEffect(() => {
     const bootstrapUser = async () => {
@@ -61,6 +62,7 @@ export default function Home() {
           await setUserInfo(await userCheck.json());
           await setLoggedIn(true);
           setInterval(partyDetailsWatchdog, 2000);
+          setInterval(partyTimeWatchdog, 2000);
           break;
         case 401:
         // invalid password
@@ -88,6 +90,26 @@ export default function Home() {
     let newInfo = await details.json();
     await setPartyInfo(newInfo.text);
   };
+
+  const partyTimeWatchdog = async () => {
+    let headers = new Headers();
+    headers.append(
+      "Authorization",
+      "Basic " + base64_encode(uid + ":" + password)
+    );
+    const details = await fetch(API_URL + "/announce/bell", {
+      method: "GET",
+      headers: headers,
+    });
+
+    if (details.status !== 200) {
+      console.log("Something went wrong fetching bell enabled details");
+      return;
+    }
+
+    let newInfo = await details.json();
+    await setPartyTime(newInfo.text === 'Y');
+  }
 
   const register = async (username: string, password: string) => {
     let headers = new Headers();
@@ -160,12 +182,12 @@ export default function Home() {
           <div className="flex flex-col gap-20">
             <Ringer
               loading={doorbellLoading}
-              disabled={doorbellDisabled}
+              disabled={doorbellDisabled || !partyTime}
               userInfo={userInfo}
               onSubmit={ring}
               partyInfo={partyInfo}
             />
-            <AdminPanel userInfo={userInfo} uid={uid} password={password} />
+            <AdminPanel userInfo={userInfo} uid={uid} password={password} partyTime={partyTime} />
           </div>
         )}
 
