@@ -1,5 +1,6 @@
 "use client";
 
+import { Loading } from "@nextui-org/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,11 +10,15 @@ export interface LoginProps {
 
 export default function Login(props: LoginProps) {
   const [password, setPassword] = useState<string>("");
+  const [canSubmit, setCanSubmit] = useState<boolean>(true);
   const inputRef = useRef<any>(null);
 
   const submitPassword = (e: any) => {
     e.preventDefault();
+    if (!canSubmit) return;
+    setCanSubmit(false);
     props.onSubmit(password);
+    setTimeout(() => setCanSubmit(true), 3000);
   };
 
   useEffect(() => {
@@ -33,12 +38,19 @@ export default function Login(props: LoginProps) {
       <form className="flex flex-col gap-4">
         <input
           type="password"
+          disabled={!canSubmit}
           ref={inputRef}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Your password"
           className="bg-transparent border-0 border-b-2 border-b-peach focus:border-b-citron !outline-none font-sans pb-1"
         />
-        <input type="submit" value="" onClick={(e) => submitPassword(e)} />
+        <input
+          type="submit"
+          disabled={!canSubmit}
+          value=""
+          onClick={(e) => submitPassword(e)}
+        />
+        {canSubmit ? null : <Loading />}
       </form>
     </>
   );

@@ -103,10 +103,12 @@ export default function AdminPanel(props: AdminPanelProps) {
   };
 
   useEffect(() => {
-    getUsers();
-    getRings();
-    setInterval(getRings, 5000);
-  }, []);
+    if (props.userInfo.admin) {
+      getUsers();
+      getRings();
+      setInterval(getRings, 5000);
+    }
+  }, [props.userInfo]);
 
   if (!props.userInfo?.admin) {
     return;
