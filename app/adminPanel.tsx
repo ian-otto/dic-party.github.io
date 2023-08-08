@@ -112,8 +112,8 @@ export default function AdminPanel(props: AdminPanelProps) {
       "Authorization",
       "Basic " + base64_encode(props.uid + ":" + props.password)
     );
-    let enabled = 'Y';
-    if(props.partyTime) enabled = 'N';
+    let enabled = "Y";
+    if (props.partyTime) enabled = "N";
     const bell = await fetch(API_URL + "/announce/bell", {
       method: "POST",
       headers: headers,
@@ -122,7 +122,7 @@ export default function AdminPanel(props: AdminPanelProps) {
       }),
     });
     setBellLoading(false);
-  }
+  };
 
   useEffect(() => {
     if (props.userInfo.admin) {
@@ -153,7 +153,7 @@ export default function AdminPanel(props: AdminPanelProps) {
       <Table
         compact
         bordered={false}
-        borderWeight={0}
+        borderWeight={undefined}
         aria-label="User admin table"
         css={{
           height: "auto",
@@ -208,7 +208,7 @@ export default function AdminPanel(props: AdminPanelProps) {
                 }}
               >
                 <Checkbox
-                  isSelected={item.banned}
+                  checked={item.banned}
                   onChange={(e: boolean) => {
                     updateUser({
                       ...item,
@@ -223,7 +223,7 @@ export default function AdminPanel(props: AdminPanelProps) {
                 }}
               >
                 <Checkbox
-                  isSelected={item.admin}
+                  checked={item.admin}
                   onChange={(e: boolean) => {
                     updateUser({
                       ...item,
@@ -247,7 +247,7 @@ export default function AdminPanel(props: AdminPanelProps) {
         compact
         striped
         bordered={false}
-        borderWeight={0}
+        shadow={false}
         aria-label="Ring log"
         css={{
           height: "auto",
@@ -313,7 +313,6 @@ export default function AdminPanel(props: AdminPanelProps) {
   } else {
     buttonContent = props.partyTime ? "Disable Doorbell" : "Enable Doorbell";
   }
-
 
   return (
     <div className="flex flex-col gap-8">

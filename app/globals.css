@@ -11,3 +11,12 @@
   font-family: "highway-gothic";
   src: url("../public/fonts/HWYGWDE.TTF");
 }
+
+.nextui-table-container {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.nextui-checkbox-mask::after {
+  background-color: #686ea0 !important;
+}
