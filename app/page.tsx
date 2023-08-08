@@ -1,6 +1,6 @@
 "use client";
 
-import { Spacer } from "@nextui-org/react";
+import { NextUIProvider, createTheme } from "@nextui-org/react";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -11,6 +11,19 @@ import Register from "./register";
 import Ringer from "./ringer";
 
 const API_URL = "https://7mg5vpebc4.execute-api.us-west-2.amazonaws.com";
+
+const theme = createTheme({
+  type: "dark", // it could be "light" or "dark"
+  theme: {
+    colors: {
+      primary: "#686EA0",
+    },
+    space: {},
+    fonts: {
+      sans: "highway-gothic, sans-serif",
+    },
+  },
+});
 
 export default function Home() {
   const [password, setPassword] = useState("");
@@ -115,7 +128,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen max-h-screen flex flex-col bg-gray-dark text-white">
+    <div className="min-h-screen flex flex-col bg-gray-dark text-white">
       <header className="flex">
         <aside className="hidden sm:flex bg-periwinkle h-[136.5px] flex-grow">
           &nbsp;
@@ -144,7 +157,7 @@ export default function Home() {
         )}
 
         {loggedIn && (
-          <>
+          <div className="flex flex-col gap-20">
             <Ringer
               loading={doorbellLoading}
               disabled={doorbellDisabled}
@@ -152,9 +165,8 @@ export default function Home() {
               onSubmit={ring}
               partyInfo={partyInfo}
             />
-            <Spacer />
             <AdminPanel userInfo={userInfo} uid={uid} password={password} />
-          </>
+          </div>
         )}
 
         {registering && <Register onSubmit={register} />}

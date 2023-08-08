@@ -15,8 +15,8 @@ module.exports = {
       "gray-light": "#777",
       "gray-dark": "#111",
       white: "#fff",
-      dcprimary: "#686e9f",
-      dcsecondary: "#86c8bc",
+      dcprimary: "#686EA0",
+      dcsecondary: "#F8A28B",
       dcsuccess: "#eada24",
       dcerror: "#ffa38b",
     },
@@ -32,5 +32,4 @@ module.exports = {
       },
     },
   },
-  plugins: [],
 };
