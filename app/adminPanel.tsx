@@ -16,6 +16,7 @@ import {
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import css from "styled-jsx/css";
 
 import { colors } from "./constants";
 
@@ -131,6 +132,7 @@ export default function AdminPanel(props: AdminPanelProps) {
       <Table
         compact
         bordered={false}
+        borderWeight={0}
         aria-label="User admin table"
         css={{
           height: "auto",
@@ -139,14 +141,39 @@ export default function AdminPanel(props: AdminPanelProps) {
         }}
       >
         <Table.Header>
-          <Table.Column>User</Table.Column>
-          <Table.Column>Banned</Table.Column>
-          <Table.Column>Admin</Table.Column>
+          <Table.Column
+            css={{
+              backgroundColor: "transparent",
+              paddingLeft: "0px !important",
+            }}
+          >
+            User
+          </Table.Column>
+          <Table.Column
+            css={{
+              backgroundColor: "transparent",
+              textAlign: "center",
+            }}
+          >
+            Banned
+          </Table.Column>
+          <Table.Column
+            css={{
+              backgroundColor: "transparent",
+              textAlign: "center",
+            }}
+          >
+            Admin
+          </Table.Column>
         </Table.Header>
         <Table.Body>
           {users.map((item: any) => (
             <Table.Row key={item.id}>
-              <Table.Cell>
+              <Table.Cell
+                css={{
+                  paddingLeft: "0px !important",
+                }}
+              >
                 <p className="font-serif text-lg text-citron leading-1">
                   {item.username}
                 </p>
@@ -154,7 +181,11 @@ export default function AdminPanel(props: AdminPanelProps) {
                   {item.id}
                 </p>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell
+                css={{
+                  textAlign: "center",
+                }}
+              >
                 <Checkbox
                   checked={item.banned}
                   onChange={(e: any) => {
@@ -165,7 +196,11 @@ export default function AdminPanel(props: AdminPanelProps) {
                   }}
                 ></Checkbox>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell
+                css={{
+                  textAlign: "center",
+                }}
+              >
                 <Checkbox
                   checked={item.admin}
                   onChange={(e: any) => {
@@ -187,25 +222,61 @@ export default function AdminPanel(props: AdminPanelProps) {
 
   if (rings.length > 0) {
     ringsTable = (
-      <Table aria-label="Ring log">
+      <Table
+        compact
+        striped
+        bordered={false}
+        borderWeight={0}
+        aria-label="Ring log"
+        css={{
+          height: "auto",
+          minWidth: "100%",
+        }}
+      >
         <Table.Header>
-          <Table.Column>User</Table.Column>
-          <Table.Column>Timestamp</Table.Column>
+          <Table.Column
+            css={{
+              backgroundColor: "transparent",
+              paddingLeft: "0px !important",
+            }}
+          >
+            User
+          </Table.Column>
+          <Table.Column
+            css={{
+              backgroundColor: "transparent",
+              textAlign: "right",
+            }}
+          >
+            Timestamp
+          </Table.Column>
         </Table.Header>
         <Table.Body>
           {rings.map((item: any) => (
             <Table.Row key={item.timestamp + item.uid}>
-              <Table.Cell>{item.uid}</Table.Cell>
-              <Table.Cell>
-                {new Date(parseInt(item.timestamp) * 1000).toLocaleString(
-                  "en-US",
-                  {
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                  }
-                )}
+              <Table.Cell
+                css={{
+                  paddingLeft: "0px !important",
+                }}
+              >
+                <p className="text-white">{item.uid}</p>
+              </Table.Cell>
+              <Table.Cell
+                css={{
+                  textAlign: "right",
+                }}
+              >
+                <p className="text-white">
+                  {new Date(parseInt(item.timestamp) * 1000).toLocaleString(
+                    "en-US",
+                    {
+                      month: "short",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    }
+                  )}
+                </p>
               </Table.Cell>
             </Table.Row>
           ))}
