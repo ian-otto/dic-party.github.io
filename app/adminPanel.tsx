@@ -231,6 +231,7 @@ export default function AdminPanel(props: AdminPanelProps) {
         css={{
           height: "auto",
           minWidth: "100%",
+          padding: "0px",
         }}
       >
         <Table.Header>
