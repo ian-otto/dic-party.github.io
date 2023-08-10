@@ -185,6 +185,7 @@ export default function Home() {
               disabled={doorbellDisabled || !partyTime}
               userInfo={userInfo}
               onSubmit={ring}
+              onResetSubmit={register}
               partyInfo={partyInfo}
             />
             <AdminPanel userInfo={userInfo} uid={uid} password={password} partyTime={partyTime} />
