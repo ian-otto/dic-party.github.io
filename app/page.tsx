@@ -111,6 +111,31 @@ export default function Home() {
     await setPartyTime(newInfo.text === 'Y');
   }
 
+  const resetPasswordReal = async (username: string, newPass: string) => {
+    let headers = new Headers();
+    headers.append(
+      "Authorization",
+      "Basic " + base64_encode(uid + ":" + password)
+    );
+    const userRegister = await fetch(API_URL + "/user/" + uid, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        username: username,
+        password: newPass,
+      }),
+    });
+
+    setPassword(newPass);
+    
+    console.log("weeeeeeeee");
+    if (userRegister.status !== 200) {
+      console.log("something went wrong");
+      console.log(await userRegister.json());
+      return;
+    }
+  };
+
   const register = async (username: string, password: string) => {
     let headers = new Headers();
     const userRegister = await fetch(API_URL + "/user/" + uid, {
@@ -185,7 +210,7 @@ export default function Home() {
               disabled={doorbellDisabled || !partyTime}
               userInfo={userInfo}
               onSubmit={ring}
-              onResetSubmit={register}
+              onResetSubmit={resetPasswordReal}
               partyInfo={partyInfo}
             />
             <AdminPanel userInfo={userInfo} uid={uid} password={password} partyTime={partyTime} />
